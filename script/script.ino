@@ -107,3 +107,6 @@ void menu(){
   lcd_1.write(5);
   lcd_1.print("|   Scores");
 }
+
+
+
