@@ -8,7 +8,5 @@ class Player {
 
   unsigned char col;
 
-   Player(char name, unsigned int score);
-
-
-}
+   Player(char name, unsigned int score, class rgb_lcd lcd);
+};

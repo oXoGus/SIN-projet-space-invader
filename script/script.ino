@@ -6,17 +6,34 @@
 #define bLeft 5
 #define bShoot 6
 #define bMenu 1
-#define START 1
+#define START 16
 #define SCORE 2 
 #define QUIT 3
 #define BACK 4
 
 
 
-rgb_lcd lcd;
 int n = 0;
-unsigned char select;
+unsigned char select ;
 unsigned char gameCounter = 0;
+
+rgb_lcd lcd;
+
+char lcdEnterNameLineZero[] = {
+  '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', 'O', 'K', 
+}
+
+char alphabetUpperCase[] = {
+  'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+  'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
+};
+
+char alphabetLowerCase[] = {
+  'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+  'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
+};
+
+
 
 byte sprite[8] = {0b00001110,
                  	0b00010101,
@@ -87,7 +104,7 @@ void setup(){
   
   // setup du lcd 
   lcd.begin(16, 2);
-  lcd.setRGB(0, 0, 0);
+  lcd.setRGB(255, 255, 255);
   lcd.createChar(1, sprite);
   lcd.createChar(2, menu1);
   lcd.createChar(3, menu2);
@@ -96,43 +113,24 @@ void setup(){
   lcd.createChar(6, mob1);
   lcd.createChar(7, rock);
 
+  Serial.begin(9600);
   // setup des boutons 
   pinMode(bUp, INPUT);
   pinMode(bDown, INPUT);
   pinMode(bLeft, INPUT);
   pinMode(bRight, INPUT);
   pinMode(bShoot, INPUT);
-  pinMode(bMenu, INPUT)
+  pinMode(bMenu, INPUT);
 }
 
 void loop(){
-  lcd.setCursor(15, 0);
-  lcd.write(1);
-  lcd.setCursor(15, 1);
-  lcd.write(6);
-  lcd.setCursor(14, 0);
-  lcd.write(7);
-  lcd.setCursor(0, 0);
-  lcd.write(2);
-  lcd.write(3);
-  lcd.print("|   Start");
-  lcd.setCursor(0, 1);
-  lcd.write(4);
-  lcd.write(5);
-  lcd.print("|   Scores");
-  lcd.cursor();
-  lcd.blink();
+  Serial.println(select); // debug
+  menu(select);
   if (digitalRead(bUp)){
     select = START; 
-    lcd.setCursor(0, 11); 
-    lcd.cursor(); // on affiche le curseur après le start  
-    lcd.blink(); // clignotement du curseur 
   }
   else if (digitalRead(bDown)){
-    select = SCORE; 
-    lcd.setCursor(1, 12); 
-    lcd.cursor(); // on affiche le curseur après le start  
-    lcd.blink(); // clignotement du curseur
+    select = SCORE;
   }
   if (select == START && digitalRead(bShoot)){
     unsigned int score = 0;
@@ -140,8 +138,9 @@ void loop(){
       //debut du jeu
       if (gameCounter == 0){
         // entrer le psedo du joueur
+        lcd.clear();
         char name ;
-        Player player(name, score); // on crée l'objet joueur avec comme parametre son psedo
+        Player player(name, score, lcd); // on crée l'objet joueur avec comme parametre son psedo
       } 
 
       
@@ -179,9 +178,56 @@ void loop(){
 
  }
 
-void menu(){
-  
+void menu(unsigned char select){
+  if (select == SCORE){
+    lcd.setCursor(15, 0);
+    lcd.write(1);
+    lcd.setCursor(15, 1);
+    lcd.write(6);
+    lcd.setCursor(14, 0);
+    lcd.write(7);
+    lcd.setCursor(0, 0);
+    lcd.write(2);
+    lcd.write(3);
+    lcd.print("|   Start");
+    lcd.setCursor(0, 1);
+    lcd.write(4);
+    lcd.write(5);
+    lcd.print("|  ");
+    lcd.write(0b11110011);
+    lcd.print("Scores");
+    lcd.setCursor(0, 11);
+
+  }
+  else if (select == START){
+    lcd.setCursor(15, 0);
+    lcd.write(1);
+    lcd.setCursor(15, 1);
+    lcd.write(6);
+    lcd.setCursor(14, 0);
+    lcd.write(7);
+    lcd.setCursor(0, 0);
+    lcd.write(2);
+    lcd.write(3);
+    lcd.print("|  ");
+    lcd.write(0b11110011);
+    lcd.print("Start");
+    lcd.setCursor(0, 1);
+    lcd.write(4);
+    lcd.write(5);
+    lcd.print("|   Scores");
+    lcd.setCursor(0, 11);
+  }
 }
+
+void lcdEnterName(){
+  lcd.home() // curseur a 0, 0
+  for (unsigned char i; i<16; i++){
+    lcd.print(lcdEnterNameLineZero[i]);
+  }
+
+}
+
 
 
 
