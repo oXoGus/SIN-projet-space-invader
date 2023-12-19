@@ -1,11 +1,16 @@
 #include <rgb_lcd.h>
+#include "player.h"
 #define bUp 2
 #define bDown 3
 #define bRight 4
 #define bLeft 5
 #define bShoot 6
+#define bMenu 1
 #define START 1
 #define SCORE 2 
+#define QUIT 3
+#define BACK 4
+
 
 
 rgb_lcd lcd;
@@ -97,68 +102,10 @@ void setup(){
   pinMode(bLeft, INPUT);
   pinMode(bRight, INPUT);
   pinMode(bShoot, INPUT);
+  pinMode(bMenu, INPUT)
 }
 
 void loop(){
-  menu();
-  if (digitalRead(bUp)){
-    select = START; 
-    lcd.setCursor(0, 11); 
-    lcd.lcdcursor(); // on affiche le curseur après le start  
-    lcd.blink(); // clignotement du curseur 
-  }
-  else if (digitalRead(bDown)){
-    select = SCORE; 
-    lcd.setCursor(1, 12); 
-    lcd.lcdcursor(); // on affiche le curseur après le start  
-    lcd.blink(); // clignotement du curseur
-  }
-  if (select == START && digitalRead(bShoot)){
-    unsigned int score = 0;
-    while(select != QUIT){
-      //debut du jeu
-      if (gameCounter == 0){
-        // entrer le psedo du joueur
-        char name = ...;
-        Player player(name, score); // on crée l'objet joueur avec comme parametre son psedo
-      } 
-      // jeu
-      // menu pause
-
-      if (digitalRead(bMenu)){
-        pauseMenu();
-        while (!(select == QUIT && digitalRead(bSoot)) || !(select == BACK && digitalRead(bSoot))){
-          if (digitalRead(bUp)){
-            select = QUIT; 
-            lcd.setCursor(...); 
-            lcd.lcdcursor(); // on affiche le curseur après le start  
-            lcd.blink(); // clignotement du curseur 
-          }
-          else if (digitalRead(bDown)){
-            select = BACK; 
-            lcd.setCursor(...); 
-            lcd.lcdcursor(); // on affiche le curseur après le start  
-            lcd.blink(); // clignotement du curseur
-          }  
-        }
-      }
-
-      // retour du jeu
-
-      // a la mort du joueur 
-      // sauvegarde en mémoir UPROM
-      
-    }
-  }
-  if (select == SCORE && digitalRead(bShoot)){
-    while(!(select == QUIT && digitalRead(bSoot))){
-      // on afficher ce qu'il y a dans la mémoire UPROM
-    }
-  }
-
- }
-
-void menu(){
   lcd.setCursor(15, 0);
   lcd.write(1);
   lcd.setCursor(15, 1);
@@ -173,6 +120,67 @@ void menu(){
   lcd.write(4);
   lcd.write(5);
   lcd.print("|   Scores");
+  lcd.cursor();
+  lcd.blink();
+  if (digitalRead(bUp)){
+    select = START; 
+    lcd.setCursor(0, 11); 
+    lcd.cursor(); // on affiche le curseur après le start  
+    lcd.blink(); // clignotement du curseur 
+  }
+  else if (digitalRead(bDown)){
+    select = SCORE; 
+    lcd.setCursor(1, 12); 
+    lcd.cursor(); // on affiche le curseur après le start  
+    lcd.blink(); // clignotement du curseur
+  }
+  if (select == START && digitalRead(bShoot)){
+    unsigned int score = 0;
+    while(select != QUIT){
+      //debut du jeu
+      if (gameCounter == 0){
+        // entrer le psedo du joueur
+        char name ;
+        Player player(name, score); // on crée l'objet joueur avec comme parametre son psedo
+      } 
+
+      
+      // jeu
+      // menu pause
+
+      if (digitalRead(bMenu)){
+        lcd.clear();
+        while (!(select == QUIT && digitalRead(bShoot)) || !(select == BACK && digitalRead(bShoot))){
+          if (digitalRead(bUp)){
+            select = QUIT; 
+            lcd.cursor(); // on affiche le curseur après le start  
+            lcd.blink(); // clignotement du curseur 
+          }
+          else if (digitalRead(bDown)){
+            select = BACK; 
+            lcd.cursor(); // on affiche le curseur après le start  
+            lcd.blink(); // clignotement du curseur
+          }  
+        }
+      }
+
+      // retour du jeu
+
+      // a la mort du joueur 
+      // sauvegarde en mémoir UPROM
+      
+    }
+  }
+  if (select == SCORE && digitalRead(bShoot)){
+    while(!(select == QUIT && digitalRead(bShoot))){
+      // on afficher ce qu'il y a dans la mémoire UPROM
+    }
+  }
+
+ }
+
+void menu(){
+  
 }
 
 
