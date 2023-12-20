@@ -11,6 +11,8 @@
 #define QUIT 3
 #define BACK 4
 #define OK 55
+#define UPPER 1
+#define LOWER 0
 
 
 
@@ -160,13 +162,9 @@ void loop(){
         while (!(select == QUIT && digitalRead(bShoot)) || !(select == BACK && digitalRead(bShoot))){
           if (digitalRead(bUp)){
             select = QUIT; 
-            lcd.cursor(); // on affiche le curseur après le start  
-            lcd.blink(); // clignotement du curseur 
           }
           else if (digitalRead(bDown)){
             select = BACK; 
-            lcd.cursor(); // on affiche le curseur après le start  
-            lcd.blink(); // clignotement du curseur
           }  
         }
       }
@@ -229,25 +227,60 @@ void menu(unsigned char select){
 }
 
 char lcdEnterName(){
+  char row = 1;
+  char col = 0;
+  bool Case = LOWER
   char psedo[14];
   String lineOne[] = {"_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "O", "K"};
-  String lineTwo[] = {"^", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"};
-  while (select != OK){
-    lcd.setCursor(0, 0); // curseur a 0, 0
-    for (char i = 0; i < 16; i++){
-      lcd.print(pixOne[i]);
-    }
-    lcd.setCursor(0, 1);
-    lcd.write(uint8_t);
-    for (char i = 0; i < 14; i++){
-      lcd.print(pixTwo[i]);
-    }
-    lcd.write(0b01111110);
+  String lineTwo[] = {"^", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m"};
+  lcd.setCursor(0, 0); // curseur a 0, 0
+  for (char i = 0; i < 16; i++){
+    lcd.print(lineOne[i]);
   }
+  lcd.setCursor(0, 1);
+  for (char i = 0; i < 14; i++){
+    lcd.print(lineTwo[i]);
+  }
+  lcd.write(0b01111110); // ecrit ->
+  lcd.write(0b01111111); // ecrit <-
+  lcd.setCursor(col, row);
+  lcd.blink();
+  while (select != OK || select != QUIT){
+    if (digitalRead(bRight)){
+      if (col+1 < 16){ // tant que l'on sort pas du lcd
+        col++;
+        lcd.setCursor(col, row);
+      }
+    }
+    if (digitalRead(bLeft)){
+      if (col-1 >= 0){ // tant que l'on sort pas du lcd
+        col--;
+        lcd.setCursor(col, row);
+      }
+    }
   }
 }
 
+bool upperCase(bool Case){
+  String lineTwoUpper[] = {"^", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"};
+  String lineTwoLower[] = {"^", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m"};
+  lcd.setCursor(0, 1)
+  if (Case == UPPER){
+    for (char i = 0; i < 14; i++){
+      lcd.print(lineTwoLower[i]);
+      Case = LOWER;
+      return Case;
+    }
 
+  }
+  else if (Case == LOWER){
+    for (char i = 0; i < 14; i++){
+      lcd.print(lineTwoUpper[i]);
+    }
+    Case = UPPER;
+    return Case;
+  }
+}
 
 
 
