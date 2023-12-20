@@ -10,6 +10,7 @@
 #define SCORE 2 
 #define QUIT 3
 #define BACK 4
+#define OK 55
 
 
 
@@ -21,7 +22,11 @@ rgb_lcd lcd;
 
 char lcdEnterNameLineZero[] = {
   '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', 'O', 'K', 
-}
+};
+
+char lcdEnterNameLineOne[] = {
+  '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', 'O', 'K', 
+};
 
 char alphabetUpperCase[] = {
   'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
@@ -134,13 +139,16 @@ void loop(){
   }
   if (select == START && digitalRead(bShoot)){
     unsigned int score = 0;
+    lcd.clear();
     while(select != QUIT){
       //debut du jeu
+
       if (gameCounter == 0){
         // entrer le psedo du joueur
-        lcd.clear();
+        
+        lcdEnterName();
         char name ;
-        Player player(name, score, lcd); // on crée l'objet joueur avec comme parametre son psedo
+        Player player(name, score); // on crée l'objet joueur avec comme parametre son psedo
       } 
 
       
@@ -199,7 +207,7 @@ void menu(unsigned char select){
     lcd.setCursor(0, 11);
 
   }
-  else if (select == START){
+  else{
     lcd.setCursor(15, 0);
     lcd.write(1);
     lcd.setCursor(15, 1);
@@ -220,13 +228,26 @@ void menu(unsigned char select){
   }
 }
 
-void lcdEnterName(){
-  lcd.home() // curseur a 0, 0
-  for (unsigned char i; i<16; i++){
-    lcd.print(lcdEnterNameLineZero[i]);
-  }
+char lcdEnterName(){
+  char pseudo[14];
 
+  while (select != OK){
+    lcd.setCursor(0, 0); // curseur a 0, 0
+    for (unsigned char i; i<16; i++){
+      lcd.print(lcdEnterNameLineZero[i]);
+    }
+    lcd.setCursor(0,1);
+    for (unsigned char i; i<16; i++){
+      lcd.print(lcdEnterNameLineOne[i])
+    }
+
+  }
 }
+
+
+
+
+
 
 
 

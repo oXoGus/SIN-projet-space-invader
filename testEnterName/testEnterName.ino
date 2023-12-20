@@ -33,12 +33,18 @@ char alphabetLowerCase[] = {
   'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
 };
 void setup() {
-
+  pinMode()
 }
 
 void loop() {
+  lcdEnterNme();
+}
+
+
+void lcdEnterName(){
   lcd.home() // curseur a 0, 0
   for (unsigned char i; i<16; i++){
     lcd.print(lcdEnterNameLineZero[i]);
   }
 }
+
