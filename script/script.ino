@@ -229,7 +229,7 @@ void menu(unsigned char select){
 }
 
 char lcdEnterName(){
-  char pseudo[14];
+  char psedo[14];
   String lineOne[] = {"_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "O", "K"};
   String lineTwo[] = {"^", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"};
   while (select != OK){
@@ -243,6 +243,7 @@ char lcdEnterName(){
       lcd.print(pixTwo[i]);
     }
     lcd.write(0b01111110);
+  }
   }
 }
 
