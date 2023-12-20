@@ -20,8 +20,8 @@ unsigned char gameCounter = 0;
 
 rgb_lcd lcd;
 
-char lcdEnterNameLineZero[] = {
-  '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', 'O', 'K', 
+String lcdEnterNameLineZero[] = {
+  "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "OK", 
 };
 
 char lcdEnterNameLineOne[] = {
@@ -230,17 +230,19 @@ void menu(unsigned char select){
 
 char lcdEnterName(){
   char pseudo[14];
-
+  String lineOne[] = {"_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "O", "K"};
+  String lineTwo[] = {"^", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"};
   while (select != OK){
     lcd.setCursor(0, 0); // curseur a 0, 0
-    for (unsigned char i; i<16; i++){
-      lcd.print(lcdEnterNameLineZero[i]);
+    for (char i = 0; i < 16; i++){
+      lcd.print(pixOne[i]);
     }
-    lcd.setCursor(0,1);
-    for (unsigned char i; i<16; i++){
-      lcd.print(lcdEnterNameLineOne[i])
+    lcd.setCursor(0, 1);
+    lcd.write(uint8_t);
+    for (char i = 0; i < 14; i++){
+      lcd.print(pixTwo[i]);
     }
-
+    lcd.write(0b01111110);
   }
 }
 
