@@ -1,11 +1,10 @@
 #include <EEPROM.h>
 
 char pseudo[5][2][20] = {{{"Zeffut0", "0"},
-                           "Zeffut1", "1"},
-                           "Zeffut2", "2"},
-                           "Zeffut3", "3"},
-                           "Zeffut4", "4"},
-                           }}
+                          {"Zeffut1", "1"},
+                          {"Zeffut2", "2"},
+                          {"Zeffut3", "3"},
+                          {"Zeffut4", "4"}}}
 
 void setup() {
   Serial.begin(9600);

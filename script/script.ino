@@ -238,7 +238,7 @@ char lcdEnterName(){
     }
     lcd.setCursor(0,1);
     for (unsigned char i; i<16; i++){
-      lcd.print(lcdEnterNameLineOne[i])
+      lcd.print(lcdEnterNameLineOne[i]);
     }
 
   }
