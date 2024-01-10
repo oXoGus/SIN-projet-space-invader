@@ -1,11 +1,11 @@
 #include <rgb_lcd.h>
 #include "player.h"
-#define bUp 2
-#define bDown 3
-#define bRight 4
-#define bLeft 5
-#define bShoot 6
-#define bMenu 1
+#define bUp 5
+#define bDown 6
+#define bRight 3
+#define bLeft 4
+#define bShoot 2
+#define bMenu 8
 #define START 16
 #define SCORE 2 
 #define QUIT 3
@@ -25,24 +25,10 @@ unsigned char gameCounter = 0;
 
 rgb_lcd lcd;
 
-String lcdEnterNameLineZero[] = {
-  "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "OK", 
-};
-
-char lcdEnterNameLineOne[] = {
-  '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', 'O', 'K', 
-};
-
-char alphabetUpperCase[] = {
-  'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
-  'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
-};
-
-char alphabetLowerCase[] = {
-  'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
-  'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
-};
-
+String lineTwoUpperPageOne[] = {"^", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"};
+String lineTwoLowerPageOne[] = {"^", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m"};
+String lineTwoUpperPageTwo[] = {"^", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+String lineTwoLowerPageTwo[] = {"^", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
 
 
 byte sprite[8] = {0b00001110,
@@ -123,7 +109,7 @@ void setup(){
   lcd.createChar(6, mob1);
   lcd.createChar(7, rock);
 
-  Serial.begin(9600);
+  Serial.begin(115200);
   // setup des boutons 
   pinMode(bUp, INPUT);
   pinMode(bDown, INPUT);
@@ -236,44 +222,63 @@ char lcdEnterName(){
   char Case = LOWER;
   char psedo[14];
   String lineOne[] = {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "O", "K"};
-  String lineTwo[] = {"^", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m"};
   lcd.setCursor(0, 0); // curseur a 0, 0
   for (char i = 0; i < 16; i++){
     lcd.print(lineOne[i]);
   }
   lcd.setCursor(0, 1);
   for (char i = 0; i < 14; i++){
-    lcd.print(lineTwo[i]);
+    lcd.print(lineTwoLowerPageOne[i]);
   }
   lcd.write(0b01111111); // ecrit <-
   lcd.write(0b00111110); // ecrit >
   lcd.setCursor(col, row);
   lcd.blink();
+  delay(1000);
   while (select != OK || select != QUIT){
     /*
     systeme de déplacement du curseur 
     */
     if (digitalRead(bRight)){
       if (col+1 < 16){ // tant que l'on sort pas du lcd
+        char dizaine = char(col/10+48);
+        char unite = char(col%10+48);
+        Serial.print(dizaine);
+        Serial.println(unite);
         col++;
         lcd.setCursor(col, row);
       }
     }
     if (digitalRead(bLeft)){
       if (col-1 >= 0){ // tant que l'on sort pas du lcd
+        char dizaine = char(col/10+48);
+        char unite = char(col%10+48);
+        Serial.print(dizaine);
+        Serial.println(unite);
         col--;
+        Serial.println(col);
         lcd.setCursor(col, row);
       }
     }
     if (digitalRead(bUp)){
       if (row - 1  >= 0 ){
+        char dizaine = char(row/10+48);
+        char unite = char(row%10+48);
+        Serial.print(dizaine);
+        Serial.println(unite);
         row--;
+        Serial.println(row);
         lcd.setCursor(col, row);
       }
     }
     if (digitalRead(bDown)){
       if (row + 1 < 2 ){
+        char dizaine = char(row/10+48);
+        char unite = char(row%10+48);
+        Serial.print(dizaine);
+        Serial.println(unite);
         row++;
+        Serial.println(row);
         lcd.setCursor(col, row);
       }
     }
@@ -282,22 +287,21 @@ char lcdEnterName(){
     */
     if (digitalRead(bShoot)){
       typePosition, Case, alphabetPage = actions(typePosition, col, row, Case, alphabetPage);
+      lcd.setCursor(col, row);
     }
+    delay(250);
   }
 }
 
 char setCase(char Case, char alphabetPage){
-  String lineTwoUpperPageOne[] = {"^", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"};
-  String lineTwoLowerPageOne[] = {"^", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m"};
-  String lineTwoUpperPageTwo[] = {"^", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
-  String lineTwoLowerPageTwo[] = {"^", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
+  
   lcd.setCursor(0, 1);
   /*
   systeme de flag avec Case et alphabetPage
   */
   if (Case == UPPER && alphabetPage == PAGEONE){ // si 
     for (char i = 0; i < 14; i++){
-      lcd.print(lineTwoUpperPageOne[i]);
+      lcd.print(lineTwoLowerPageOne[i]);
     }
     lcd.write(0b01111111); // ecrit <-
     lcd.write(0b00111110); // ecrit >
@@ -306,7 +310,7 @@ char setCase(char Case, char alphabetPage){
   }
   else if (Case == LOWER && alphabetPage == PAGEONE){
     for (char i = 0; i < 14; i++){
-      lcd.print(lineTwoLowerPageOne[i]);
+      lcd.print(lineTwoUpperPageOne[i]);
     }
     lcd.write(0b01111111); // ecrit <-
     lcd.write(0b00111110); // ecrit >
@@ -315,7 +319,7 @@ char setCase(char Case, char alphabetPage){
   }
   else if (Case == UPPER && alphabetPage == PAGETWO){
     for (char i = 0; i < 14; i++){
-      lcd.print(lineTwoUpperPageTwo[i]);
+      lcd.print(lineTwoLowerPageTwo[i]);
     }
     lcd.write(0b01111111); // ecrit <-
     lcd.write(0b00111100); // ecrit <
@@ -324,7 +328,7 @@ char setCase(char Case, char alphabetPage){
   }
   else if (Case == LOWER && alphabetPage == PAGETWO){
     for (char i = 0; i < 14; i++){
-      lcd.print(lineTwoLowerPageTwo[i]);
+      lcd.print(lineTwoUpperPageTwo[i]);
     }
     lcd.write(0b01111111); // ecrit <-
     lcd.write(0b00111100); // ecrit <
@@ -334,10 +338,6 @@ char setCase(char Case, char alphabetPage){
 }
 
 char setPage(char Case, char alphabetPage){
-  String lineTwoUpperPageOne[] = {"^", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"};
-  String lineTwoLowerPageOne[] = {"^", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m"};
-  String lineTwoUpperPageTwo[] = {"^", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
-  String lineTwoLowerPageTwo[] = {"^", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
   lcd.setCursor(0, 1);
   /*
   systeme de flag avec Case et alphabetPage
