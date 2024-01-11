@@ -224,7 +224,7 @@ void startMenu(unsigned char select){
 
 char menu(){
   while (select != QUIT || select != BACK){
-    
+
   }
 
 }
@@ -401,7 +401,7 @@ char actions(){
   else if (col == 15 && row == 1){ //  position du ">" sur le lcd
     setPage();
   }
-  else if (row == 1 && col > 0 && col < 14 && Case == LOWER && alphabetPage == PAGEONE){ // si le joueur tape sur une des lettre en minuscule de la première page 
+  else if (row == 1 && col > 0 && col < 14 && Case == LOWER && alphabetPage == PAGEONE && typePosition < 14){ // si le joueur tape sur une des lettre en minuscule de la première page 
     lineOne[typePosition] = lineTwoLowerPageOne[col]; // on met la lettre qu'a choisit le joueur dans le tableau char de la ligne 1 a la bonne position
     lcd.setCursor(0, 0);
     lcd.print(lineOne); 
@@ -409,21 +409,22 @@ char actions(){
     typePosition++; // on décale la position du curseur de 1 vers la droite 
 
   }
-  else if (row == 1 && col > 0 && col < 14 && Case == LOWER && alphabetPage == PAGETWO){ // si le joueur tape sur une des lettre en minuscule de la première page 
+  else if (row == 1 && col > 0 && col < 14 && Case == LOWER && alphabetPage == PAGETWO && typePosition < 14){ // si le joueur tape sur une des lettre en minuscule de la première page 
+
     lineOne[typePosition] = lineTwoLowerPageTwo[col]; // on met la lettre qu'a choisit le joueur dans le tableau char de la ligne 1 a la bonne position
     lcd.setCursor(0, 0);
     lcd.print(lineOne); 
     pseudo[typePosition] = lineTwoLowerPageOne[col];
     typePosition++; // on décale la position du curseur de 1 vers la droite 
   }
-  else if (row == 1 && col > 0 && col < 14 && Case == UPPER && alphabetPage == PAGEONE){ // si le joueur tape sur une des lettre en minuscule de la première page 
+  else if (row == 1 && col > 0 && col < 14 && Case == UPPER && alphabetPage == PAGEONE && typePosition < 14){ // si le joueur tape sur une des lettre en minuscule de la première page 
     lineOne[typePosition] = lineTwoUpperPageOne[col]; // on met la lettre qu'a choisit le joueur dans le tableau char de la ligne 1 a la bonne position
     lcd.setCursor(0, 0);
     lcd.print(lineOne); 
     pseudo[typePosition] = lineTwoLowerPageOne[col];
     typePosition++; // on décale la position du curseur de 1 vers la droite 
   }
-  else if (row == 1 && col > 0 && col < 14 && Case == UPPER && alphabetPage == PAGETWO){ // si le joueur tape sur une des lettre en minuscule de la première page 
+  else if (row == 1 && col > 0 && col < 14 && Case == UPPER && alphabetPage == PAGETWO && typePosition < 14){ // si le joueur tape sur une des lettre en minuscule de la première page 
     lineOne[typePosition] = lineTwoUpperPageTwo[col]; // on met la lettre qu'a choisit le joueur dans le tableau char de la ligne 1 a la bonne position
     lcd.setCursor(0, 0);
     lcd.print(lineOne); 
