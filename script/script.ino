@@ -129,7 +129,7 @@ void setup(){
 }
 
 void loop(){
-  menu(select);
+  startMenu(select);
   if (digitalRead(bUp)){
     select = START; 
   }
@@ -146,7 +146,6 @@ void loop(){
         // entrer le psedo du joueur
         
         lcdEnterName();
-        char name ;
         Player player(name, score); // on crée l'objet joueur avec comme parametre son psedo
       } 
 
@@ -181,7 +180,7 @@ void loop(){
 
  }
 
-void menu(unsigned char select){
+void startMenu(unsigned char select){
   if (select == SCORE){
     lcd.setCursor(15, 0);
     lcd.write(1);
@@ -221,6 +220,13 @@ void menu(unsigned char select){
     lcd.print("|   Scores");
     lcd.setCursor(0, 11);
   }
+}
+
+char menu(){
+  while (select != QUIT || select != BACK){
+    
+  }
+
 }
 
 char lcdEnterName(){
@@ -301,6 +307,9 @@ char lcdEnterName(){
         Serial.println(unite);
         lcd.setCursor(col, row);
       }
+    }
+    else if (digitalRead(bMenu)){
+
     }
     /*
     systeme d'action sur le clavier 
@@ -429,7 +438,9 @@ char actions(){
       lcd.print(lineOne); 
       pseudo[typePosition] = lineTwoLowerPageOne[col];
     }
-    
+  }
+  else if (row == 0 && (col == 14 || col == 15)){
+    select = OK;
   }
 }
 
