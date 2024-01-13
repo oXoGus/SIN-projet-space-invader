@@ -36,11 +36,12 @@ char typePosition = 0;
 char Case = LOWER;
 
 char lineTwoLowerPageOne[] = {'^', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', '\0'};
-char lineOne[] = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'O', 'K', '\0'};
+
 char lineTwoUpperPageOne[] = {'^', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', '\0'};
 char lineTwoUpperPageTwo[] = {'^', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '\0'};
 char lineTwoLowerPageTwo[] = {'^', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '\0'};
 
+char lineOne[] = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'O', 'K', '\0'};
 char lineOneInit[] = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'O', 'K', '\0'};
 
 
@@ -133,10 +134,10 @@ void setup(){
   pinMode(bRight, INPUT);
   pinMode(bShoot, INPUT);
   pinMode(bMenu, INPUT);
+  select = START;
 }
 
 void loop(){
-  char select = START;
   startMenu(select);
   if (digitalRead(bUp)){
     select = START; 
@@ -145,15 +146,19 @@ void loop(){
     select = SCORE;
   }
   if (select == START && digitalRead(bShoot)){
-    unsigned int score = 0;
+    unsigned int score;
     lcd.clear();
-    while(select != QUIT){
-      //debut du jeu
-
-      if (gameCounter == 0){
+    if (gameCounter == 0){
         // entrer le psedo du joueur
         lcdEnterName();
       } 
+    lcd.clear();
+    lcd.print("yes");
+    Serial.println(select);
+    while(select != QUIT){
+      //debut du jeu
+
+      
 
       
       // jeu
@@ -238,7 +243,7 @@ char menu(){
     else if (digitalRead(bLeft)){
       menuSelect = BACK;
     }
-    else if (digitalRead(bShoot) && menuSelect == QUIT){
+    else if (digitalRead(bShoot) && menuSelect == QUIT && antiRebond(bShoot)){
       lcdEnterNameSelect = QUIT;
       select = QUIT;
       return QUIT;
@@ -291,7 +296,7 @@ char lcdEnterName(){
   lcd.blink();
   delay(1000);
   while ((lcdEnterNameSelect != OK || lcdEnterNameSelect == QUIT) && (lcdEnterNameSelect == OK || lcdEnterNameSelect != QUIT)){
-    Serial.println(lcdEnterNameSelect+111);
+    //Serial.println(lcdEnterNameSelect+111);
 
     /*
     systeme de déplacement du curseur 
@@ -372,7 +377,7 @@ char lcdEnterName(){
 
   }
   lcd.clear();
-  return 1;
+
 }
 
 char setCase(){
@@ -493,7 +498,8 @@ char actions(){
     }
   }
   else if (row == 0 && (col == 14 || col == 15)){
-    if (lineOne == lineOneInit){
+    if (strcmp(lineOne, lineOneInit) == 0){ // la fonction strcmp retourne 0 si les tableau ont les meme caractère 
+      Serial.println("pas de pseudo");
       lcd.clear();
       lcd.setCursor(0, 0);
       lcd.print("ecrivez votre");
@@ -511,6 +517,7 @@ char actions(){
       lcd.blink();
     }
     else{
+      Serial.println("pseudo");
       lcdEnterNameSelect = OK;
       gameCounter = 1;
       lcd.noBlink();
@@ -518,9 +525,10 @@ char actions(){
   }
 }
 
-void antiRebond(char pin){
+bool antiRebond(char pin){
   delay(10);
   while (digitalRead(pin));
+  return 1;
 }
 
 
