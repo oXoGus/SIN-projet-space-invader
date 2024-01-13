@@ -8,7 +8,7 @@
 #define bMenu 8
 #define START 16
 #define SCORE 2 
-#define QUIT 3
+#define QUIT 66
 #define BACK 4
 #define OK 55
 #define UPPER 1
@@ -20,10 +20,14 @@
 
 
 int n = 0;
-unsigned char select = START;
 unsigned char gameCounter = 0;
+char lcdEnterNameSelect;
+char menuSelect;
+char select;
 
 rgb_lcd lcd;
+
+
 
 char alphabetPage = PAGEONE;
 char row = 1;
@@ -36,6 +40,9 @@ char lineOne[] = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' 
 char lineTwoUpperPageOne[] = {'^', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', '\0'};
 char lineTwoUpperPageTwo[] = {'^', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '\0'};
 char lineTwoLowerPageTwo[] = {'^', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '\0'};
+
+char lineOneInit[] = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'O', 'K', '\0'};
+
 
 char pseudo[] = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '\0'} ;
 
@@ -129,6 +136,7 @@ void setup(){
 }
 
 void loop(){
+  char select = START;
   startMenu(select);
   if (digitalRead(bUp)){
     select = START; 
@@ -144,9 +152,7 @@ void loop(){
 
       if (gameCounter == 0){
         // entrer le psedo du joueur
-        
         lcdEnterName();
-        Player player(name, score); // on crée l'objet joueur avec comme parametre son psedo
       } 
 
       
@@ -223,10 +229,55 @@ void startMenu(unsigned char select){
 }
 
 char menu(){
-  while (select != QUIT || select != BACK){
-
+  menuSelect = BACK;
+  lcd.clear();
+  while (1){
+    if (digitalRead(bRight)){
+      menuSelect = QUIT;
+    }
+    else if (digitalRead(bLeft)){
+      menuSelect = BACK;
+    }
+    else if (digitalRead(bShoot) && menuSelect == QUIT){
+      lcdEnterNameSelect = QUIT;
+      select = QUIT;
+      return QUIT;
+    }
+    else if (digitalRead(bShoot) && menuSelect == BACK){
+      lcd.setCursor(0, 0); // curseur a 0, 0
+      lcd.print(lineOne);
+      lcd.setCursor(0, 1);
+      lcd.print(lineTwoLowerPageOne);
+      lcd.write(0b01111111); // ecrit <-
+      lcd.write(0b00111110); // ecrit >
+      lcd.setCursor(col, row);
+      lcd.blink();
+      antiRebond(bShoot);
+      return;
+    }
+    if (menuSelect == BACK){
+      lcd.setCursor(5, 0);
+      lcd.print("menu");
+      lcd.setCursor(1, 1);
+      lcd.write(0b11110011);
+      lcd.print("BACK");
+      lcd.setCursor(8, 1);
+      lcd.print(" QUIT");
+    }
+    else {
+      lcd.setCursor(5, 0);
+      lcd.print("menu");
+      lcd.setCursor(1, 1);
+      lcd.print(" BACK");
+      lcd.setCursor(8, 1);
+      lcd.write(0b11110011);
+      lcd.print("QUIT");
+    }
+      
+    
+    
   }
-
+  
 }
 
 char lcdEnterName(){
@@ -239,10 +290,8 @@ char lcdEnterName(){
   lcd.setCursor(col, row);
   lcd.blink();
   delay(1000);
-  while (select != OK || select != QUIT){
-    
-    
-    
+  while ((lcdEnterNameSelect != OK || lcdEnterNameSelect == QUIT) && (lcdEnterNameSelect == OK || lcdEnterNameSelect != QUIT)){
+    Serial.println(lcdEnterNameSelect+111);
 
     /*
     systeme de déplacement du curseur 
@@ -309,7 +358,8 @@ char lcdEnterName(){
       }
     }
     else if (digitalRead(bMenu)){
-
+      
+      menu();
     }
     /*
     systeme d'action sur le clavier 
@@ -321,6 +371,8 @@ char lcdEnterName(){
     }
 
   }
+  lcd.clear();
+  return 1;
 }
 
 char setCase(){
@@ -441,7 +493,28 @@ char actions(){
     }
   }
   else if (row == 0 && (col == 14 || col == 15)){
-    select = OK;
+    if (lineOne == lineOneInit){
+      lcd.clear();
+      lcd.setCursor(0, 0);
+      lcd.print("ecrivez votre");
+      lcd.setCursor(0, 1);
+      lcd.print("pseudo");
+      delay(3000);
+      lcd.clear();
+      lcd.setCursor(0, 0); // curseur a 0, 0
+      lcd.print(lineOne);
+      lcd.setCursor(0, 1);
+      lcd.print(lineTwoLowerPageOne);
+      lcd.write(0b01111111); // ecrit <-
+      lcd.write(0b00111110); // ecrit >
+      lcd.setCursor(col, row);
+      lcd.blink();
+    }
+    else{
+      lcdEnterNameSelect = OK;
+      gameCounter = 1;
+      lcd.noBlink();
+    }
   }
 }
 
