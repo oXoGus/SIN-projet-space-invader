@@ -1,12 +1,32 @@
+#ifndef PLAYER_H
+#define PLAYER_H
+
+#include<rgb_lcd.h>
+
+
 class Player {
   public :
-  char name;
+  Player(rgb_lcd& lcdRef); // constructeur
 
-  unsigned int score;
+  void display();
 
-  unsigned char raw;
+  void clear();
 
-  unsigned char col;
+  void down();
 
-   Player(char name, unsigned int score);
+  void up();
+
+  void left();
+  
+  void right();
+ 
+  char y;
+
+  char x;
+  
+  rgb_lcd& lcd;
+
+
 };
+
+#endif

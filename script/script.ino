@@ -15,7 +15,8 @@
 #define LOWER 2
 #define PAGEONE 3
 #define PAGETWO 4
-
+#define DEFAULT 100
+#define SHIP 1
 
 
 
@@ -24,14 +25,14 @@ unsigned char gameCounter = 0;
 char lcdEnterNameSelect;
 char menuSelect;
 char select;
+char startMenuSelect;
 
 rgb_lcd lcd;
-
-
+Player ship(lcd);
 
 char alphabetPage = PAGEONE;
-char row = 1;
-char col = 0;
+char y = 1;
+char x = 0;
 char typePosition = 0;
 char Case = LOWER;
 
@@ -48,7 +49,7 @@ char lineOneInit[] = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '
 char pseudo[] = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '\0'} ;
 
 
-byte sprite[8] = {0b00001110,
+byte Ship[8] = {0b00001110,
                  	0b00010101,
                   0b00000100,
      		          0b00001110,
@@ -118,7 +119,7 @@ void setup(){
   // setup du lcd 
   lcd.begin(16, 2);
   lcd.setRGB(255, 255, 255);
-  lcd.createChar(1, sprite);
+  lcd.createChar(SHIP, Ship);
   lcd.createChar(2, menu1);
   lcd.createChar(3, menu2);
   lcd.createChar(4, menu3);
@@ -134,30 +135,46 @@ void setup(){
   pinMode(bRight, INPUT);
   pinMode(bShoot, INPUT);
   pinMode(bMenu, INPUT);
-  select = START;
+  startMenuSelect = START;
 }
 
 void loop(){
-  startMenu(select);
+  startMenu(startMenuSelect);
   if (digitalRead(bUp)){
-    select = START; 
+    startMenuSelect = START; 
   }
   else if (digitalRead(bDown)){
-    select = SCORE;
+    startMenuSelect = SCORE;
   }
-  if (select == START && digitalRead(bShoot)){
+  if (startMenuSelect == START && digitalRead(bShoot)){
     unsigned int score;
     lcd.clear();
-    if (gameCounter == 0){
+    //if (gameCounter == 0){
         // entrer le psedo du joueur
-        lcdEnterName();
-      } 
+    //   lcdEnterName();
+    //  } 
     lcd.clear();
-    lcd.print("yes");
     Serial.println(select);
+    ship.display();
+    Serial.println("DONE");
     while(select != QUIT){
       //debut du jeu
-
+      if (digitalRead(bUp)){
+        antiRebond(bUp);
+        ship.up();
+      }
+      else if (digitalRead(bDown)){
+        antiRebond(bDown);
+        ship.down();
+      }
+      else if (digitalRead(bLeft)){
+        antiRebond(bLeft);
+        ship.left();
+      }
+      else if (digitalRead(bRight)){
+        antiRebond(bRight);
+        ship.right();
+      }
       
 
       
@@ -191,8 +208,8 @@ void loop(){
 
  }
 
-void startMenu(unsigned char select){
-  if (select == SCORE){
+void startMenu(unsigned char startMenuSelect){
+  if (startMenuSelect == SCORE){
     lcd.setCursor(15, 0);
     lcd.write(1);
     lcd.setCursor(15, 1);
@@ -246,7 +263,7 @@ char menu(){
     else if (digitalRead(bShoot) && menuSelect == QUIT && antiRebond(bShoot)){
       lcdEnterNameSelect = QUIT;
       select = QUIT;
-      return QUIT;
+      return;
     }
     else if (digitalRead(bShoot) && menuSelect == BACK){
       lcd.setCursor(0, 0); // curseur a 0, 0
@@ -255,7 +272,7 @@ char menu(){
       lcd.print(lineTwoLowerPageOne);
       lcd.write(0b01111111); // ecrit <-
       lcd.write(0b00111110); // ecrit >
-      lcd.setCursor(col, row);
+      lcd.setCursor(x, y);
       lcd.blink();
       antiRebond(bShoot);
       return;
@@ -286,13 +303,16 @@ char menu(){
 }
 
 char lcdEnterName(){
+  lcdEnterNameSelect = DEFAULT;
+  Case = LOWER;
+  alphabetPage = PAGEONE;
   lcd.setCursor(0, 0); // curseur a 0, 0
   lcd.print(lineOne);
   lcd.setCursor(0, 1);
   lcd.print(lineTwoLowerPageOne);
   lcd.write(0b01111111); // ecrit <-
   lcd.write(0b00111110); // ecrit >
-  lcd.setCursor(col, row);
+  lcd.setCursor(x, y);
   lcd.blink();
   delay(1000);
   while ((lcdEnterNameSelect != OK || lcdEnterNameSelect == QUIT) && (lcdEnterNameSelect == OK || lcdEnterNameSelect != QUIT)){
@@ -304,62 +324,62 @@ char lcdEnterName(){
   
     if (digitalRead(bRight)){
       antiRebond(bRight);
-      if (col+1 < 16){ // tant que l'on sort pas du lcd
-        col++;
-        char dizaine = char(col/10+48);
-        char unite = char(col%10+48);
+      if (x+1 < 16){ // tant que l'on sort pas du lcd
+        x++;
+        char dizaine = char(x/10+48);
+        char unite = char(x%10+48);
         Serial.print(dizaine);
         Serial.println(unite);
-        lcd.setCursor(col, row);
+        lcd.setCursor(x, y);
       }
       else{
-        col = 0;
-        char dizaine = char(col/10+48);
-        char unite = char(col%10+48);
+        x = 0;
+        char dizaine = char(x/10+48);
+        char unite = char(x%10+48);
         Serial.print(dizaine);
         Serial.println(unite);
-        lcd.setCursor(col, row);
+        lcd.setCursor(x, y);
       }
     }
     else if (digitalRead(bLeft)){
       antiRebond(bLeft);
-      if (col-1 >= 0){ // tant que l'on sort pas du lcd
-        col--;
-        char dizaine = char(col/10+48);
-        char unite = char(col%10+48);
+      if (x-1 >= 0){ // tant que l'on sort pas du lcd
+        x--;
+        char dizaine = char(x/10+48);
+        char unite = char(x%10+48);
         Serial.print(dizaine);
         Serial.println(unite);
-        lcd.setCursor(col, row);
+        lcd.setCursor(x, y);
       }
       else{
-        col = 15;
-        char dizaine = char(col/10+48);
-        char unite = char(col%10+48);
+        x = 15;
+        char dizaine = char(x/10+48);
+        char unite = char(x%10+48);
         Serial.print(dizaine);
         Serial.println(unite);
-        lcd.setCursor(col, row);
+        lcd.setCursor(x, y);
       }
     }
     else if (digitalRead(bUp)){
       antiRebond(bUp);
-      if (row - 1  >= 0 ){
-        row--;
-        char dizaine = char(row/10+48);
-        char unite = char(row%10+48);
+      if (y - 1  >= 0 ){
+        y--;
+        char dizaine = char(y/10+48);
+        char unite = char(y%10+48);
         Serial.print(dizaine);
         Serial.println(unite);
-        lcd.setCursor(col, row);
+        lcd.setCursor(x, y);
       }
     }
     else if (digitalRead(bDown)){
       antiRebond(bDown);
-      if (row + 1 < 2 ){
-        row++;
-        char dizaine = char(row/10+48);
-        char unite = char(row%10+48);
+      if (y + 1 < 2 ){
+        y++;
+        char dizaine = char(y/10+48);
+        char unite = char(y%10+48);
         Serial.print(dizaine);
         Serial.println(unite);
-        lcd.setCursor(col, row);
+        lcd.setCursor(x, y);
       }
     }
     else if (digitalRead(bMenu)){
@@ -372,7 +392,7 @@ char lcdEnterName(){
     else if (digitalRead(bShoot)){
       antiRebond(bShoot);
       actions();
-      lcd.setCursor(col, row);
+      lcd.setCursor(x, y);
     }
 
   }
@@ -452,52 +472,52 @@ char setPage(){
 }
 // utiliser les variable globales
 char actions(){
-  if (col == 0 && row == 1){ // position du "^" sur le lcd
+  if (x == 0 && y == 1){ // position du "^" sur le lcd
     setCase();
   }
-  else if (col == 15 && row == 1){ //  position du ">" sur le lcd
+  else if (x == 15 && y == 1){ //  position du ">" sur le lcd
     setPage();
   }
-  else if (row == 1 && col > 0 && col < 14 && Case == LOWER && alphabetPage == PAGEONE && typePosition < 14){ // si le joueur tape sur une des lettre en minuscule de la première page 
-    lineOne[typePosition] = lineTwoLowerPageOne[col]; // on met la lettre qu'a choisit le joueur dans le tableau char de la ligne 1 a la bonne position
+  else if (y == 1 && x > 0 && x < 14 && Case == LOWER && alphabetPage == PAGEONE && typePosition < 14){ // si le joueur tape sur une des lettre en minuscule de la première page 
+    lineOne[typePosition] = lineTwoLowerPageOne[x]; // on met la lettre qu'a choisit le joueur dans le tableau char de la ligne 1 a la bonne position
     lcd.setCursor(0, 0);
     lcd.print(lineOne); 
-    pseudo[typePosition] = lineTwoLowerPageOne[col];
+    pseudo[typePosition] = lineTwoLowerPageOne[x];
     typePosition++; // on décale la position du curseur de 1 vers la droite 
 
   }
-  else if (row == 1 && col > 0 && col < 14 && Case == LOWER && alphabetPage == PAGETWO && typePosition < 14){ // si le joueur tape sur une des lettre en minuscule de la première page 
+  else if (y == 1 && x > 0 && x < 14 && Case == LOWER && alphabetPage == PAGETWO && typePosition < 14){ // si le joueur tape sur une des lettre en minuscule de la première page 
 
-    lineOne[typePosition] = lineTwoLowerPageTwo[col]; // on met la lettre qu'a choisit le joueur dans le tableau char de la ligne 1 a la bonne position
+    lineOne[typePosition] = lineTwoLowerPageTwo[x]; // on met la lettre qu'a choisit le joueur dans le tableau char de la ligne 1 a la bonne position
     lcd.setCursor(0, 0);
     lcd.print(lineOne); 
-    pseudo[typePosition] = lineTwoLowerPageOne[col];
+    pseudo[typePosition] = lineTwoLowerPageOne[x];
     typePosition++; // on décale la position du curseur de 1 vers la droite 
   }
-  else if (row == 1 && col > 0 && col < 14 && Case == UPPER && alphabetPage == PAGEONE && typePosition < 14){ // si le joueur tape sur une des lettre en minuscule de la première page 
-    lineOne[typePosition] = lineTwoUpperPageOne[col]; // on met la lettre qu'a choisit le joueur dans le tableau char de la ligne 1 a la bonne position
+  else if (y == 1 && x > 0 && x < 14 && Case == UPPER && alphabetPage == PAGEONE && typePosition < 14){ // si le joueur tape sur une des lettre en minuscule de la première page 
+    lineOne[typePosition] = lineTwoUpperPageOne[x]; // on met la lettre qu'a choisit le joueur dans le tableau char de la ligne 1 a la bonne position
     lcd.setCursor(0, 0);
     lcd.print(lineOne); 
-    pseudo[typePosition] = lineTwoLowerPageOne[col];
+    pseudo[typePosition] = lineTwoLowerPageOne[x];
     typePosition++; // on décale la position du curseur de 1 vers la droite 
   }
-  else if (row == 1 && col > 0 && col < 14 && Case == UPPER && alphabetPage == PAGETWO && typePosition < 14){ // si le joueur tape sur une des lettre en minuscule de la première page 
-    lineOne[typePosition] = lineTwoUpperPageTwo[col]; // on met la lettre qu'a choisit le joueur dans le tableau char de la ligne 1 a la bonne position
+  else if (y == 1 && x > 0 && x < 14 && Case == UPPER && alphabetPage == PAGETWO && typePosition < 14){ // si le joueur tape sur une des lettre en minuscule de la première page 
+    lineOne[typePosition] = lineTwoUpperPageTwo[x]; // on met la lettre qu'a choisit le joueur dans le tableau char de la ligne 1 a la bonne position
     lcd.setCursor(0, 0);
     lcd.print(lineOne); 
-    pseudo[typePosition] = lineTwoLowerPageOne[col];
+    pseudo[typePosition] = lineTwoLowerPageOne[x];
     typePosition++; // on décale la position du curseur de 1 vers la droite 
   }
-  else if (row == 1 && col == 14){ // la ou se trouve le symbole delet
+  else if (y == 1 && x == 14){ // la ou se trouve le symbole delet
     if(typePosition - 1 >= 0){
       typePosition--; // on recule d'une case et on la remplace avec un espace
       lineOne[typePosition] = ' ';
       lcd.setCursor(0, 0);
       lcd.print(lineOne); 
-      pseudo[typePosition] = lineTwoLowerPageOne[col];
+      pseudo[typePosition] = lineTwoLowerPageOne[x];
     }
   }
-  else if (row == 0 && (col == 14 || col == 15)){
+  else if (y == 0 && (x == 14 || x == 15)){
     if (strcmp(lineOne, lineOneInit) == 0){ // la fonction strcmp retourne 0 si les tableau ont les meme caractère 
       Serial.println("pas de pseudo");
       lcd.clear();
@@ -513,7 +533,7 @@ char actions(){
       lcd.print(lineTwoLowerPageOne);
       lcd.write(0b01111111); // ecrit <-
       lcd.write(0b00111110); // ecrit >
-      lcd.setCursor(col, row);
+      lcd.setCursor(x, y);
       lcd.blink();
     }
     else{
