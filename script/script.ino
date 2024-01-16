@@ -1,5 +1,6 @@
 #include <rgb_lcd.h>
 #include "player.h"
+#include "Laser.h"
 #define bUp 5
 #define bDown 6
 #define bRight 3
@@ -26,9 +27,11 @@ char lcdEnterNameSelect;
 char menuSelect;
 char select;
 char startMenuSelect;
+char laserCount = 0;
 
 rgb_lcd lcd;
 Player ship(lcd);
+Laser lasers[16];
 
 char alphabetPage = PAGEONE;
 char y = 1;
@@ -174,6 +177,11 @@ void loop(){
       else if (digitalRead(bRight)){
         antiRebond(bRight);
         ship.right();
+      }
+      else if (digitalRead(bShoot)){
+        lasers[laserCount] = Laser(lcd, ship); // on crée un objet Laser dans la liste des objet laser
+        
+        laserCounter++; // on incrémente l'index de la liste lasers
       }
       
 
@@ -551,4 +559,20 @@ bool antiRebond(char pin){
   return 1;
 }
 
-
+/*
+void laserCollision(){
+  while(char i = 0; i < 17; i++){ // on test tout les objet 
+    if (lasers[i].x + 1 == rocks[i].x && lasers[i].y == rocks[i].y){ // si le laser et le rocher sont cote a cote
+      rocks[i].hit++; // on incrémente le nombre de hit qu'a pris le rocher 
+      if (rocks[i].hit == 3 ){ // si le rocher s'est pris 3 coup il explose
+        rocks[i].explode;     
+      }
+      lasers[i].x = -1; // on deplace le laser en dehore du lcd pour faire grn qu'il disparait 
+    }
+    if (lasers[i].x + 1 == monsters[i].x && lasers[i].y == monsters[i].y){ // le laser et le monster sont cote a cote 
+      monsters[i].explode;
+      lasers[i].x = -1; // on deplace le laser en dehore du lcd pour faire grn qu'il disparait
+    }
+  }
+}
+*/

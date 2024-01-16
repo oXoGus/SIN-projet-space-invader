@@ -1,5 +1,5 @@
-#ifndef LASER_H
-#define LASER_H
+#ifndef ROCK_H
+#define ROCK_H
 
 #include<rgb_lcd.h>
 
@@ -11,15 +11,14 @@ class Laser : {
 
   void update();
 
-  
-
   char y; // coordonnée en y de l'objet 
 
   char x; // coordonnée en x de l'objet
 
+  char hit = 0;
+
   rgb_lcd& lcd;
 
-  player& ship;
 }
 
 #endif
