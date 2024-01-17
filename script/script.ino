@@ -123,8 +123,8 @@ void setup(){
   lcd.begin(16, 2);
   lcd.setRGB(255, 255, 255);
   lcd.createChar(SHIP, Ship);
-  lcd.createChar(2, menu1);
-  lcd.createChar(3, menu2);
+  lcd.createChar(2, explode);
+  lcd.createChar(3, explode2);
   lcd.createChar(4, menu3);
   lcd.createChar(5, menu4);
   lcd.createChar(6, mob1);
