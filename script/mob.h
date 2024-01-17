@@ -1,9 +1,9 @@
-#ifndef ROCK_H
-#define ROCK_H
+#ifndef MOB_H
+#define MOB_H
 
 #include<rgb_lcd.h>
 
-class Rock : {
+class Mob : {
   
   public : 
   
@@ -20,8 +20,6 @@ class Rock : {
   char y; // coordonnée en y de l'objet 
 
   char x = 15; // coordonnée en x de l'objet
-
-  char hit = 0;
 
   rgb_lcd& lcd;
 

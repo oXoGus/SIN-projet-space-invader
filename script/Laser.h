@@ -7,11 +7,13 @@ class Laser : {
   
   public : 
   
-  Laser(rgb_lcd& lcdRef); // constructeur de l'objet Laser "&" indique qu'au lieu de passer une copie de l'objet on passe un réference a l'objet original
+  Laser(rgb_lcd& lcdRef, player& shipRef); // constructeur de l'objet Laser "&" indique qu'au lieu de passer une copie de l'objet on passe un réference a l'objet original
 
   void update();
 
-  
+  void clear();
+
+  void display();
 
   char y; // coordonnée en y de l'objet 
 

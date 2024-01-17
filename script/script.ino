@@ -559,7 +559,7 @@ bool antiRebond(char pin){
   return 1;
 }
 
-/*
+
 void laserCollision(){
   while(char i = 0; i < 17; i++){ // on test tout les objet 
     if (lasers[i].x + 1 == rocks[i].x && lasers[i].y == rocks[i].y){ // si le laser et le rocher sont cote a cote
@@ -575,4 +575,4 @@ void laserCollision(){
     }
   }
 }
-*/
+
