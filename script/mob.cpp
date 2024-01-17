@@ -1,5 +1,5 @@
 #include<rgb_lcd.h>
-#include"monster.h"
+#include"mob.h"
 
 #define ROCK 7
 
@@ -23,6 +23,15 @@ void Mob::clear(){
 void Mob::display(){ // on affiche le laser sur le lcd
   lcd.setCursor(x, y);
   lcd.write(ROCK);
+}
+
+void Mod::explode(){
+  lcd.setCursor(x, y);
+  lcd.write(2);
+  delay(100);
+  lcd.write(3);
+  delay(100);
+  clear();
 }
 
 void Mob::update(){ // on décale le rocher 

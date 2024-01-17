@@ -17,6 +17,8 @@ class Rock : {
 
   char monRandom();
 
+  void explode();
+
   char y; // coordonnée en y de l'objet 
 
   char x = 15; // coordonnée en x de l'objet

@@ -8,7 +8,7 @@ Rock::Rock(rgb_lcd& lcdRef) : lcd(lcdRef){
   display(); // on affiche le rocher 
 }
 
-char Mob::monRandom(unsigned char borneMin,unsigned char borneMax){
+char Rock::monRandom(unsigned char borneMin,unsigned char borneMax){
 	randomSeed(analogRead(0)); //on initialise une nouvelle seed 
   char resultat=0; 
 	resultat=random()%(borneMax-borneMin+1)+borneMin; // on calcule de nombre aléatoire 
@@ -23,6 +23,15 @@ void Rock::clear(){
 void Rock::display(){ // on affiche le laser sur le lcd
   lcd.setCursor(x, y);
   lcd.write(ROCK);
+}
+
+void Mod::explode(){
+  lcd.setCursor(x, y);
+  lcd.write(2);
+  delay(100);
+  lcd.write(3);
+  delay(100);
+  clear();
 }
 
 void Rock::update(){ // on décale le rocher 

@@ -1,6 +1,8 @@
 #include <rgb_lcd.h>
 #include "player.h"
 #include "Laser.h"
+#include "rock.h"
+#include "mob.h"
 #define bUp 5
 #define bDown 6
 #define bRight 3
@@ -32,6 +34,8 @@ char laserCount = 0;
 rgb_lcd lcd;
 Player ship(lcd);
 Laser lasers[16];
+Rock rocks[16];
+Mob mobs[16];
 
 char alphabetPage = PAGEONE;
 char y = 1;
@@ -181,7 +185,7 @@ void loop(){
       else if (digitalRead(bShoot)){
         lasers[laserCount] = Laser(lcd, ship); // on crée un objet Laser dans la liste des objet laser
         
-        laserCounter++; // on incrémente l'index de la liste lasers
+        laserCount++; // on incrémente l'index de la liste lasers
       }
       
 
@@ -569,8 +573,8 @@ void laserCollision(){
       }
       lasers[i].x = -1; // on deplace le laser en dehore du lcd pour faire grn qu'il disparait 
     }
-    if (lasers[i].x + 1 == monsters[i].x && lasers[i].y == monsters[i].y){ // le laser et le monster sont cote a cote 
-      monsters[i].explode;
+    if (lasers[i].x + 1 == mobs[i].x && lasers[i].y == mobs[i].y){ // le laser et le monster sont cote a cote 
+      mobs[i].explode;
       lasers[i].x = -1; // on deplace le laser en dehore du lcd pour faire grn qu'il disparait
     }
   }
