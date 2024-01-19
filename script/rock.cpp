@@ -1,5 +1,6 @@
 #include<rgb_lcd.h>
 #include"rock.h"
+#include"Arduino.h"
 
 #define ROCK 7
 
@@ -13,6 +14,8 @@ char Rock::monRandom(unsigned char borneMin,unsigned char borneMax){
   char resultat=0; 
 	resultat=random()%(borneMax-borneMin+1)+borneMin; // on calcule de nombre aléatoire 
 	return resultat; // on renvoie le resultat 
+}
+
 
 void Rock::clear(){
   lcd.setCursor(x, y);
@@ -25,7 +28,7 @@ void Rock::display(){ // on affiche le laser sur le lcd
   lcd.write(ROCK);
 }
 
-void Mod::explode(){
+void Rock::explode(){
   lcd.setCursor(x, y);
   lcd.write(2);
   delay(100);

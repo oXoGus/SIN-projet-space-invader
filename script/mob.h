@@ -3,11 +3,11 @@
 
 #include<rgb_lcd.h>
 
-class Mob : {
+class Mob {
   
   public : 
   
-  Rock(rgb_lcd& lcdRef); // constructeur de l'objet Laser "&" indique qu'au lieu de passer une copie de l'objet on passe un réference a l'objet original
+  Mob(rgb_lcd& lcdRef); // constructeur de l'objet Laser "&" indique qu'au lieu de passer une copie de l'objet on passe un réference a l'objet original
 
   void update();
 
@@ -15,7 +15,7 @@ class Mob : {
 
   void display();
 
-  char monRandom();
+  char monRandom(unsigned char borneMin,unsigned char borneMax);
 
   void explode();
 
@@ -25,6 +25,6 @@ class Mob : {
 
   rgb_lcd& lcd;
 
-}
+};
 
 #endif

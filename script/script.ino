@@ -21,7 +21,7 @@
 #define DEFAULT 100
 #define SHIP 1
 
-
+String LaserCount[] = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"};
 
 int n = 0;
 unsigned char gameCounter = 0;
@@ -30,12 +30,29 @@ char menuSelect;
 char select;
 char startMenuSelect;
 char laserCount = 0;
+char laserAvailable = 0;
+
 
 rgb_lcd lcd;
 Player ship(lcd);
-Laser lasers[16];
-Rock rocks[16];
-Mob mobs[16];
+Laser laser1(lcd, ship);
+Laser laser2(lcd, ship);
+Laser laser3(lcd, ship);
+Laser laser4(lcd, ship);
+Laser laser5(lcd, ship);
+Laser laser6(lcd, ship);
+Laser laser7(lcd, ship);
+Laser laser8(lcd, ship);
+Laser laser9(lcd, ship);
+Laser laser10(lcd, ship);
+Laser laser11(lcd, ship);
+Laser laser12(lcd, ship);
+Laser laser13(lcd, ship);
+Laser laser14(lcd, ship);
+Laser laser15(lcd, ship);
+Laser laser16(lcd, ship);
+Laser laser17(lcd, ship);
+
 
 char alphabetPage = PAGEONE;
 char y = 1;
@@ -153,7 +170,7 @@ void loop(){
   else if (digitalRead(bDown)){
     startMenuSelect = SCORE;
   }
-  if (startMenuSelect == START && digitalRead(bShoot)){
+  if (startMenuSelect == START && digitalRead(bShoot) && antiRebond(bShoot)){
     unsigned int score;
     lcd.clear();
     //if (gameCounter == 0){
@@ -183,15 +200,15 @@ void loop(){
         ship.right();
       }
       else if (digitalRead(bShoot)){
-        lasers[laserCount] = Laser(lcd, ship); // on crée un objet Laser dans la liste des objet laser
-        
-        laserCount++; // on incrémente l'index de la liste lasers
+        isLaserActive().shoot();
       }
       
 
-      
-      // jeu
-      // menu pause
+      laserDebbug();
+      laserUpdate();
+      laserDebbug();
+      delay(150);
+
 
       if (digitalRead(bMenu)){
         lcd.clear();
@@ -204,21 +221,22 @@ void loop(){
           }  
         }
       }
+    }
+  }
+      
+
+      
+      // jeu
+      // menu pause
+
+      
 
       // retour du jeu
 
       // a la mort du joueur 
       // sauvegarde en mémoir UPROM
-      
-    }
-  }
-  if (select == SCORE && digitalRead(bShoot)){
-    while(!(select == QUIT && digitalRead(bShoot))){
-      // on afficher ce qu'il y a dans la mémoire UPROM
-    }
-  }
-
- }
+}
+  
 
 void startMenu(unsigned char startMenuSelect){
   if (startMenuSelect == SCORE){
@@ -563,9 +581,141 @@ bool antiRebond(char pin){
   return 1;
 }
 
+void laserUpdate(){
+  if (laser1.active){
+    laser1.update();
+  }
+  if (laser2.active){
+    laser2.update();
+  }
+  if (laser3.active){
+    laser3.update();
+  }
+  if (laser4.active){
+    laser4.update();
+  }
+  if (laser5.active){
+    laser5.update();
+  }
+  if (laser6.active){
+    laser6.update();
+  }
+  if (laser7.active){
+    laser7.update();
+  }
+  if (laser8.active){
+    laser8.update();
+  }
+  if (laser9.active){
+    laser9.update();
+  }
+  if (laser10.active){
+    laser10.update();
+  }
+  if (laser11.active){
+    laser11.update();
+  }
+  if (laser12.active){
+    laser12.update();
+  }
+  if (laser13.active){
+    laser13.update();
+  }
+  if (laser14.active){
+    laser14.update();
+  }
+  if (laser15.active){
+    laser15.update();
+  }
+  if (laser16.active){
+    laser7.update();
+  }
+  if (laser17.active){
+    laser17.update();
+  }
+}
 
+void laserDebbug(){
+  Serial.print("laser1.active ="); Serial.print(laser1.active); Serial.print(" | ");Serial.print("laser1.x et y = ");Serial.print(laser1.x+48);Serial.print(" ");Serial.println(laser1.y+48);
+  Serial.print("laser2.active ="); Serial.print(laser2.active); Serial.print(" | ");Serial.print("laser2.x et y = ");Serial.print(laser2.x+48);Serial.print(" ");Serial.println(laser2.y+48);
+  Serial.print("laser3.active ="); Serial.print(laser3.active); Serial.print(" | ");Serial.print("laser3.x et y = ");Serial.print(laser3.x+48);Serial.print(" ");Serial.println(laser3.y+48);
+  Serial.print("laser3.active ="); Serial.print(laser4.active); Serial.print(" | ");Serial.print("laser4.x et y = ");Serial.print(laser4.x+48);Serial.print(" ");Serial.println(laser4.y+48);
+}
+
+Laser isLaserActive(){
+  if (laser1.active == 0){
+    laser1.active = 1;
+    return laser1;
+  }
+  else if (laser2.active == 0){
+    laser2.active = 1;
+    return laser2;
+  }
+  else if (laser3.active == 0){
+    laser3.active = 1;
+    return laser3;
+  }
+  else if (laser4.active == 0){
+    laser4.active = 1;
+    return laser4;
+  }
+  else if (laser5.active == 0){
+    laser5.active = 1;
+    return laser5;
+  }
+  else if (laser6.active == 0){
+    laser6.active = 1;
+    return laser6;
+  }
+  else if (laser7.active == 0){
+    laser7.active = 1;
+    return laser7;
+  }
+  else if (laser8.active == 0){
+    laser8.active = 1;
+    return laser8;
+  }
+  else if (laser9.active == 0){
+    laser9.active = 1;
+    return laser9;
+  }
+  else if (laser10.active == 0){
+    laser10.active = 1;
+    return laser10;
+  }
+  else if (laser11.active == 0){
+    laser11.active = 1;
+    return laser11;
+  }
+  else if (laser12.active == 0){
+    laser12.active = 1;
+    return laser12;
+  }
+  else if (laser13.active == 0){
+    laser13.active = 1;
+    return laser13;
+  }
+  else if (laser14.active == 0){
+    laser14.active = 1;
+    return laser14;
+  }
+  else if (laser15.active == 0){
+    laser15.active = 1;
+    return laser15;
+  }
+  else if (laser16.active == 0){
+    laser16.active = 1;
+    return laser16;
+  }
+  else if (laser17.active == 0){
+    laser17.active = 1;
+    return laser17;
+  }
+
+}
+/*
 void laserCollision(){
-  while(char i = 0; i < 17; i++){ // on test tout les objet 
+  for(char i = 0; i < 17; i++){ // on test tout les objet 
     if (lasers[i].x + 1 == rocks[i].x && lasers[i].y == rocks[i].y){ // si le laser et le rocher sont cote a cote
       rocks[i].hit++; // on incrémente le nombre de hit qu'a pris le rocher 
       if (rocks[i].hit == 3 ){ // si le rocher s'est pris 3 coup il explose
@@ -578,5 +728,5 @@ void laserCollision(){
       lasers[i].x = -1; // on deplace le laser en dehore du lcd pour faire grn qu'il disparait
     }
   }
-}
+}*/
 

@@ -3,7 +3,7 @@
 
 #include<rgb_lcd.h>
 
-class Rock : {
+class Rock {
   
   public : 
   
@@ -15,7 +15,7 @@ class Rock : {
 
   void display();
 
-  char monRandom();
+  char monRandom(unsigned char borneMin,unsigned char borneMax);
 
   void explode();
 
@@ -27,6 +27,6 @@ class Rock : {
 
   rgb_lcd& lcd;
 
-}
+};
 
 #endif
