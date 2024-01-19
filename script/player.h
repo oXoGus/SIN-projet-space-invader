@@ -20,9 +20,9 @@ class Player {
   
   void right();
  
-  char y;
+  char yShip;
 
-  char x;
+  char xShip;
   
   rgb_lcd& lcd;
 

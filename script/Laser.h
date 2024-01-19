@@ -20,11 +20,14 @@ class Laser {
 
   void display();
 
-  char y; // coordonnée en y de l'objet 
+  
 
-  char x; // coordonnée en x de l'objet
+  char yLaser; // coordonnée en y de l'objet 
 
-  char active = 0+48;
+  char xLaser; // coordonnée en x de l'objet
+
+
+  bool active;
 
   rgb_lcd& lcd;
 

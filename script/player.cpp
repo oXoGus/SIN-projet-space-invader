@@ -8,50 +8,50 @@ Player::Player(rgb_lcd& lcdRef) : lcd(lcdRef){
 
 void Player::display(){
   lcd.clear();
-  lcd.setCursor(x, y);
+  lcd.setCursor(xShip, yShip);
   lcd.write(SHIP);
 }
 
 
 void Player::clear(){
-  lcd.setCursor(x, y);
+  lcd.setCursor(xShip, yShip);
   lcd.print(" ");
-  lcd.setCursor(x, y);
+  lcd.setCursor(xShip, yShip);
 }
 
 
 void Player::down(){
-  if (y + 1 <2){
+  if (yShip + 1 <2){
     clear();
-    y++;
-    lcd.setCursor(x, y);
+    yShip++;
+    lcd.setCursor(xShip, yShip);
     lcd.write(SHIP);
   }
 }
 
 void Player::up(){
-  if (y - 1 >= 0){
+  if (yShip - 1 >= 0){
     clear();
-    y--;
-    lcd.setCursor(x, y);
+    yShip--;
+    lcd.setCursor(xShip, yShip);
     lcd.write(SHIP);
   }
 }
 
 void Player::left(){
-  if (x - 1 >= 0){
+  if (xShip - 1 >= 0){
     clear();
-    x--;
-    lcd.setCursor(x, y);
+    xShip--;
+    lcd.setCursor(xShip, yShip);
     lcd.write(SHIP);
   }
 }
 
 void Player::right(){
-  if (x + 1 < 16){
+  if (xShip + 1 < 16){
     clear();
-    x++;
-    lcd.setCursor(x, y);
+    xShip++;
+    lcd.setCursor(xShip, yShip);
     lcd.write(SHIP);
   }
 }

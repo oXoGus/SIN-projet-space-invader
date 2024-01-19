@@ -3,7 +3,7 @@
 #include "Laser.h"
 #include "rock.h"
 #include "mob.h"
-#include <U8g2lib.h>
+//#include <U8g2lib.h>
 #include <Wire.h>
 #define bUp 5
 #define bDown 6
@@ -25,13 +25,14 @@
 
 String LaserCount[] = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"};
 
-U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2(U8G2_R0, SCL, SDA, U8X8_PIN_NONE);
+//U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2(U8G2_R0, SCL, SDA, U8X8_PIN_NONE);
 
 int counter = 0;
 
 #define IMAGE_WIDTH 128
 #define IMAGE_HEIGHT 32
 
+unsigned int score = 0;
 int n = 0;
 unsigned char gameCounter = 0;
 char lcdEnterNameSelect;
@@ -149,7 +150,7 @@ byte menu4[8] = {0b00011111,
 
 void setup(){
   //setup de l'écran oled
-  u8g2.begin();
+  //u8g2.begin();
   
   // setup du lcd 
   lcd.begin(16, 2);
@@ -182,7 +183,7 @@ void loop(){
     startMenuSelect = SCORE;
   }
   if (startMenuSelect == START && digitalRead(bShoot) && antiRebond(bShoot)){
-    unsigned int score;
+    
     lcd.clear();
     //if (gameCounter == 0){
         // entrer le psedo du joueur
@@ -215,9 +216,8 @@ void loop(){
       }
       
 
-      laserDebbug();
+      //displayScore(score);
       laserUpdate();
-      laserDebbug();
       delay(150);
 
 
@@ -801,8 +801,8 @@ Laser isLaserActive(){
   
 }
 
-
-void score(int x){
+/*
+void displayScore(unsigned int score){
   u8g2.firstPage();
   do {
     u8g2.setFont(u8g2_font_ncenB14_tr);
@@ -812,12 +812,12 @@ void score(int x){
 
     char buffer2[20];
     u8g2.setFont(u8g2_font_10x20_tn);
-    sprintf(buffer2, "%d", x);
+    sprintf(buffer2, "%d", score);
     u8g2.drawStr(10, 48, buffer2);
 
   } while (u8g2.nextPage());
 }
-
+*/
 /*
 void laserCollision(){
   for(char i = 0; i < 17; i++){ // on test tout les objet 
