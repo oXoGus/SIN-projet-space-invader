@@ -8,11 +8,17 @@ int counter = 0;
 #define IMAGE_WIDTH 128
 #define IMAGE_HEIGHT 32
 
-void setup(void) {
+void setup() {
   u8g2.begin();
 }
 
-void loop(void) {
+void loop() {
+  score(counter);
+  counter++;
+  delay(1000);
+}
+
+void score(int x){
   u8g2.firstPage();
   do {
     u8g2.setFont(u8g2_font_ncenB14_tr);
@@ -22,11 +28,8 @@ void loop(void) {
 
     char buffer2[20];
     u8g2.setFont(u8g2_font_10x20_tn);
-    sprintf(buffer2, "%d", counter);
+    sprintf(buffer2, "%d", x);
     u8g2.drawStr(10, 48, buffer2);
 
   } while (u8g2.nextPage());
-
-  counter++;
-  delay(1000);
 }
