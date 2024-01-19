@@ -593,6 +593,8 @@ bool antiRebond(char pin){
 }
 
 void laserUpdate(){
+  //Serial.println("avant la mise a jour du laser");
+  //laserDebbug();
   if (laser1.active){
     laser1.update();
   }
@@ -644,86 +646,161 @@ void laserUpdate(){
   if (laser17.active){
     laser17.update();
   }
+  //Serial.println("après la mise a jour du laser");
+  //laserDebbug();
 }
 
 void laserDebbug(){
-  Serial.print("laser1.active ="); Serial.print(laser1.active); Serial.print(" | ");Serial.print("laser1.x et y = ");Serial.print(laser1.x+48);Serial.print(" ");Serial.println(laser1.y+48);
-  Serial.print("laser2.active ="); Serial.print(laser2.active); Serial.print(" | ");Serial.print("laser2.x et y = ");Serial.print(laser2.x+48);Serial.print(" ");Serial.println(laser2.y+48);
-  Serial.print("laser3.active ="); Serial.print(laser3.active); Serial.print(" | ");Serial.print("laser3.x et y = ");Serial.print(laser3.x+48);Serial.print(" ");Serial.println(laser3.y+48);
-  Serial.print("laser3.active ="); Serial.print(laser4.active); Serial.print(" | ");Serial.print("laser4.x et y = ");Serial.print(laser4.x+48);Serial.print(" ");Serial.println(laser4.y+48);
+  char laser1XDizaine = char(laser1.xLaser/10+48);
+  char laser1XUnite = char(laser1.xLaser%10+48);
+  Serial.print("laser1.active = "); Serial.print(laser1.active); Serial.print(" | ");Serial.print("laser1.x et y = ");Serial.print(laser1XDizaine);Serial.print(laser1XUnite);Serial.print(" ");Serial.println((char)laser1.yLaser);
+  Serial.print("laser2.active = "); Serial.print(laser2.active); Serial.print(" | ");Serial.print("laser2.x et y = ");Serial.print((char)laser2.xLaser);Serial.print(" ");Serial.println((char)laser2.yLaser);
+  Serial.print("laser3.active = "); Serial.print(laser3.active); Serial.print(" | ");Serial.print("laser3.x et y = ");Serial.print((char)laser3.xLaser);Serial.print(" ");Serial.println((char)laser3.yLaser);
+  Serial.print("laser4.active = "); Serial.print(laser4.active); Serial.print(" | ");Serial.print("laser4.x et y = ");Serial.print((char)laser4.xLaser);Serial.print(" ");Serial.println((char)laser4.yLaser);
 }
 
 Laser isLaserActive(){
+  //Serial.println("avant l'activation du laser");
+  //laserDebbug();
   if (laser1.active == 0){
     laser1.active = 1;
+    laser1.xLaser = ship.xShip + 1;
+    laser1.yLaser = ship.yShip;
+    Serial.println("après l'activation du laser");
+    laserDebbug();
     return laser1;
   }
   else if (laser2.active == 0){
     laser2.active = 1;
+    laser2.xLaser = ship.xShip + 1;
+    laser2.yLaser = ship.yShip;
+    Serial.println("après l'activation du laser");
+    laserDebbug();
     return laser2;
   }
   else if (laser3.active == 0){
     laser3.active = 1;
+    laser3.xLaser = ship.xShip + 1;
+    laser3.yLaser = ship.yShip;
+    Serial.println("après l'activation du laser");
+    laserDebbug();
     return laser3;
   }
   else if (laser4.active == 0){
     laser4.active = 1;
+    laser4.xLaser = ship.xShip + 1;
+    laser4.yLaser = ship.yShip;
+    Serial.println("après l'activation du laser");
+    laserDebbug();
     return laser4;
   }
   else if (laser5.active == 0){
     laser5.active = 1;
+    laser5.xLaser = ship.xShip + 1;
+    laser5.yLaser = ship.yShip;
+    Serial.println("après l'activation du laser");
+    laserDebbug();
     return laser5;
   }
   else if (laser6.active == 0){
     laser6.active = 1;
+    laser6.xLaser = ship.xShip + 1;
+    laser6.yLaser = ship.yShip;
+    Serial.println("après l'activation du laser");
+    laserDebbug();
     return laser6;
   }
   else if (laser7.active == 0){
     laser7.active = 1;
+    laser7.xLaser = ship.xShip + 1;
+    laser7.yLaser = ship.yShip;
+    Serial.println("après l'activation du laser");
+    laserDebbug();
     return laser7;
   }
   else if (laser8.active == 0){
     laser8.active = 1;
+    laser8.xLaser = ship.xShip + 1;
+    laser8.yLaser = ship.yShip;
+    Serial.println("après l'activation du laser");
+    laserDebbug();
     return laser8;
   }
   else if (laser9.active == 0){
     laser9.active = 1;
+    laser9.xLaser = ship.xShip + 1;
+    laser9.yLaser = ship.yShip;
+    Serial.println("après l'activation du laser");
+    laserDebbug();
     return laser9;
   }
   else if (laser10.active == 0){
     laser10.active = 1;
+    laser10.xLaser = ship.xShip + 1;
+    laser10.yLaser = ship.yShip;
+    Serial.println("après l'activation du laser");
+    laserDebbug();
     return laser10;
   }
   else if (laser11.active == 0){
     laser11.active = 1;
+    laser11.xLaser = ship.xShip + 1;
+    laser11.yLaser = ship.yShip;
+    Serial.println("après l'activation du laser");
+    laserDebbug();
     return laser11;
   }
   else if (laser12.active == 0){
     laser12.active = 1;
+    laser12.xLaser = ship.xShip + 1;
+    laser12.yLaser = ship.yShip;
+    Serial.println("après l'activation du laser");
+    laserDebbug();
     return laser12;
   }
   else if (laser13.active == 0){
     laser13.active = 1;
+    laser13.xLaser = ship.xShip + 1;
+    laser13.yLaser = ship.yShip;
+    Serial.println("après l'activation du laser");
+    laserDebbug();
     return laser13;
   }
   else if (laser14.active == 0){
     laser14.active = 1;
+    laser14.xLaser = ship.xShip + 1;
+    laser14.yLaser = ship.yShip;
+    Serial.println("après l'activation du laser");
+    laserDebbug();
     return laser14;
   }
   else if (laser15.active == 0){
     laser15.active = 1;
+    laser15.xLaser = ship.xShip + 1;
+    laser15.yLaser = ship.yShip;
+    Serial.println("après l'activation du laser");
+    laserDebbug();
     return laser15;
   }
   else if (laser16.active == 0){
     laser16.active = 1;
+    laser16.xLaser = ship.xShip + 1;
+    laser16.yLaser = ship.yShip;
+    Serial.println("après l'activation du laser");
+    laserDebbug();
     return laser16;
   }
   else if (laser17.active == 0){
     laser17.active = 1;
+    laser17.xLaser = ship.xShip + 1;
+    laser17.yLaser = ship.yShip;
+    Serial.println("après l'activation du laser");
+    laserDebbug();
     return laser17;
   }
-
+  
 }
+
 
 void score(int x){
   u8g2.firstPage();
