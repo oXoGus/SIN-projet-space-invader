@@ -15,11 +15,14 @@ class Rock {
 
   void display();
 
+
   char monRandom(unsigned char borneMin,unsigned char borneMax);
 
   void explode();
 
   char y; // coordonnée en y de l'objet 
+
+  bool active = 0;
 
   char x = 15; // coordonnée en x de l'objet
 

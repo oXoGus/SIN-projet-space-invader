@@ -38,7 +38,15 @@ void Rock::explode(){
 }
 
 void Rock::update(){ // on décale le rocher 
-  clear();
-  x--;
-  display();
+  if (x - 1 >= 0){ // tant que le rocher ne sort pas de l'écran 
+    display();
+    x--;
+    clear();
+  }
+  else{ // on réintialise la pos du rocher 
+    active = 0;
+    y = monRandom(0, 1);
+    x = 15;
+  }
+    
 }

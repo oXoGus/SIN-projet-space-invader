@@ -22,16 +22,17 @@
 #define PAGETWO 4
 #define DEFAULT 100
 #define SHIP 1
-
-String LaserCount[] = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"};
-
-//U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2(U8G2_R0, SCL, SDA, U8X8_PIN_NONE);
-
-int counter = 0;
-
 #define IMAGE_WIDTH 128
 #define IMAGE_HEIGHT 32
 
+rgb_lcd lcd;
+
+
+//U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2(U8G2_R0, SCL, SDA, U8X8_PIN_NONE);
+
+
+int counter = 0;
+unsigned int borneMax = 1000;
 unsigned int score = 0;
 int n = 0;
 unsigned char gameCounter = 0;
@@ -42,9 +43,8 @@ char startMenuSelect;
 char laserCount = 0;
 char laserAvailable = 0;
 
-
-rgb_lcd lcd;
 Player ship(lcd);
+
 Laser laser1(lcd, ship);
 Laser laser2(lcd, ship);
 Laser laser3(lcd, ship);
@@ -62,6 +62,26 @@ Laser laser14(lcd, ship);
 Laser laser15(lcd, ship);
 Laser laser16(lcd, ship);
 Laser laser17(lcd, ship);
+
+Rock rock1(lcd);
+Rock rock2(lcd);
+Rock rock3(lcd);
+Rock rock4(lcd);
+Rock rock5(lcd);
+Rock rock6(lcd);
+Rock rock7(lcd);
+Rock rock8(lcd);
+Rock rock9(lcd);
+Rock rock10(lcd);
+Rock rock11(lcd);
+Rock rock12(lcd);
+Rock rock13(lcd);
+Rock rock14(lcd);
+Rock rock15(lcd);
+Rock rock16(lcd);
+Rock rock17(lcd);
+
+
 
 
 char alphabetPage = PAGEONE;
@@ -149,12 +169,14 @@ byte menu4[8] = {0b00011111,
 
 
 void setup(){
+  lcd.begin(16, 2);
+  lcd.setRGB(255, 255, 255);
+  
   //setup de l'écran oled
   //u8g2.begin();
   
   // setup du lcd 
-  lcd.begin(16, 2);
-  lcd.setRGB(255, 255, 255);
+  
   lcd.createChar(SHIP, Ship);
   lcd.createChar(2, explode);
   lcd.createChar(3, explode2);
@@ -176,8 +198,10 @@ void setup(){
 
 void loop(){
   startMenu(startMenuSelect);
+  Serial.println("aaaaaaaaa");
   if (digitalRead(bUp)){
     startMenuSelect = START; 
+    
   }
   else if (digitalRead(bDown)){
     startMenuSelect = SCORE;
@@ -196,19 +220,19 @@ void loop(){
     while(select != QUIT){
       //debut du jeu
       if (digitalRead(bUp)){
-        antiRebond(bUp);
+        delay(100);
         ship.up();
       }
       else if (digitalRead(bDown)){
-        antiRebond(bDown);
+        delay(100);
         ship.down();
       }
       else if (digitalRead(bLeft)){
-        antiRebond(bLeft);
+        delay(100);
         ship.left();
       }
       else if (digitalRead(bRight)){
-        antiRebond(bRight);
+        delay(100);
         ship.right();
       }
       else if (digitalRead(bShoot)){
@@ -216,9 +240,13 @@ void loop(){
       }
       
 
+      delay(150);
       //displayScore(score);
       laserUpdate();
-      delay(150);
+
+      newRock();
+      rockUpdate();
+      
 
 
       if (digitalRead(bMenu)){
@@ -659,6 +687,7 @@ void laserDebbug(){
   Serial.print("laser4.active = "); Serial.print(laser4.active); Serial.print(" | ");Serial.print("laser4.x et y = ");Serial.print((char)laser4.xLaser);Serial.print(" ");Serial.println((char)laser4.yLaser);
 }
 
+
 Laser isLaserActive(){
   //Serial.println("avant l'activation du laser");
   //laserDebbug();
@@ -800,6 +829,190 @@ Laser isLaserActive(){
   }
   
 }
+
+// on active un rocher 
+Rock rockActive(){
+  //Serial.println("avant l'activation du laser");
+  //laserDebbug();
+  if (rock1.active == 0){
+    rock1.active = 1;
+    rock1.x = 15;
+    rock1.y = rock1.monRandom(0, 1);
+    return rock1;
+  }
+  else if (laser2.active == 0){
+    rock2.active = 1;
+    rock2.x = 15;
+    rock2.y = rock2.monRandom(0, 1);
+    return rock2;
+  }
+  else if (rock3.active == 0){
+    rock3.active = 1;
+    rock3.x = 15;
+    rock3.y = rock3.monRandom(0, 1);
+    return rock3;
+  }
+  else if (rock4.active == 0){
+    rock4.active = 1;
+    rock4.x = 15;
+    rock4.y = rock4.monRandom(0, 1);
+    return rock4;
+  }
+  else if (rock5.active == 0){
+    rock5.active = 1;
+    rock5.x = 15;
+    rock5.y = rock5.monRandom(0, 1);
+    return rock5;
+  }
+  else if (rock6.active == 0){
+    rock6.active = 1;
+    rock6.x = 15;
+    rock6.y = rock6.monRandom(0, 1);
+    return rock6;
+  }
+  else if (rock7.active == 0){
+    rock7.active = 1;
+    rock7.x = 15;
+    rock7.y = rock7.monRandom(0, 1);
+    return rock7;
+  }
+  else if (rock8.active == 0){
+    rock8.active = 1;
+    rock8.x = 15;
+    rock8.y = rock8.monRandom(0, 1);
+    return rock8;
+  }
+  else if (rock9.active == 0){
+    rock9.active = 1;
+    rock9.x = 15;
+    rock9.y = rock9.monRandom(0, 1);
+    return rock9;
+  }
+  else if (rock10.active == 0){
+    rock10.active = 1;
+    rock10.x = 15;
+    rock10.y = rock10.monRandom(0, 1);
+    return rock10;
+  }
+  else if (rock11.active == 0){
+    rock11.active = 1;
+    rock11.x = 15;
+    rock11.y = rock11.monRandom(0, 1);
+    return rock11;
+  }
+  else if (rock12.active == 0){
+    rock12.active = 1;
+    rock12.x = 15;
+    rock12.y = rock12.monRandom(0, 1);
+    return rock12;
+  }
+  else if (rock13.active == 0){
+    rock13.active = 1;
+    rock13.x = 15;
+    rock13.y = rock13.monRandom(0, 1);
+    return rock13;
+  }
+  else if (rock14.active == 0){
+    rock14.active = 1;
+    rock14.x = 15;
+    rock14.y = rock14.monRandom(0, 1);
+    return rock14;
+  }
+  else if (rock15.active == 0){
+    rock15.active = 1;
+    rock15.x = 15;
+    rock15.y = rock15.monRandom(0, 1);
+    return rock15;
+  }
+  else if (rock16.active == 0){
+    rock16.active = 1;
+    rock16.x = 15;
+    rock16.y = rock16.monRandom(0, 1);
+    return rock16;
+  }
+  else if (rock17.active == 0){
+    rock17.active = 1;
+    rock17.x = 15;
+    rock17.y = rock17.monRandom(0, 1);
+    return rock17;
+  }
+  
+}
+
+void newRock(){  // courbe de difficulter dépendant du score du joueur
+  if (1000-score > 1){
+    borneMax = 1000 - score;
+  }
+  if (monRandom(0, borneMax) == 1){
+      rockActive(); // on active un rocher 
+  }
+}
+
+
+
+// on met a jour la position du rocher si le rocher est activer 
+void rockUpdate(){
+  if (rock1.active){
+    rock1.update();
+  }
+  if (rock2.active){
+    rock2.update();
+  }
+  if (rock3.active){
+    rock3.update();
+  }
+  if (rock4.active){
+    rock4.update();
+  }
+  if (rock5.active){
+    rock5.update();
+  }
+  if (rock6.active){
+    rock6.update();
+  }
+  if (rock7.active){
+    rock7.update();
+  }
+  if (rock8.active){
+    rock8.update();
+  }
+  if (rock9.active){
+    rock9.update();
+  }
+  if (rock10.active){
+    rock10.update();
+  }
+  if (rock11.active){
+    rock11.update();
+  }
+  if (rock12.active){
+    rock12.update();
+  }
+  if (rock13.active){
+    rock13.update();
+  }
+  if (rock14.active){
+    rock14.update();
+  }
+  if (rock15.active){
+    rock15.update();
+  }
+  if (rock16.active){
+    rock7.update();
+  }
+  if (rock17.active){
+    rock17.update();
+  }
+}
+
+
+char monRandom(unsigned char borneMin,unsigned int borneMax){
+	randomSeed(analogRead(0)); //on initialise une nouvelle seed 
+  char resultat=0; 
+	resultat=random()%(borneMax-borneMin+1)+borneMin; // on calcule de nombre aléatoire 
+	return resultat; // on renvoie le resultat 
+}
+
 
 /*
 void displayScore(unsigned int score){
